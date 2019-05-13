@@ -16,7 +16,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect("app_ponto/login_sucesso") #importa o redirect em django.shorcuts e só chamar a função.
+                    return redirect(login_sucesso) #importa o redirect em django.shorcuts e só chamar a função.
                 else:
                     return HttpResponse('Conta desativada')
             else:
