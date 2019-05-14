@@ -8,20 +8,23 @@ def login_sucesso(request):
     return render(request, 'app_ponto/login_sucesso.html')
 
 def user_login(request):
-    if request.method == 'POST':
+    if request.method == "POST":
+
         form = LoginForm(request.POST)
-        if form.is_valid():
-            user = authenticate(username=['username'],
-                   password=['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect(login_sucesso) #importa o redirect em django.shorcuts e só chamar a função.
-                else:
-                    return HttpResponse('Conta desativada')
+        username = request.POST.get('username')
+        password = request.POST.get('Senha')
+        user = authenticate(username=str(username), password=str(password))
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect(login_sucesso)
             else:
-                return HttpResponse('Conta inválida')
+                return HttpResponse("Usuário desativado")
+                # Retorna uma mensagem de erro de 'conta desabilitada' .
+        else:
+            return HttpResponse("Login ou senha inválido")
+
+            # Retorna uma mensagem de erro 'login inválido'.
     else:
         form = LoginForm()
     return render(request, 'app_ponto/login.html', {'form': form})
-
